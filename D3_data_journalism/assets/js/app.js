@@ -41,20 +41,44 @@ function xScale(scatterData, chosenXAxis) {
   
   };
 
-  // function used for updating y-scale var upon click on axis label
-function YScale(scatterData, chosenYAxis) {
+  // function used for updating y-scale var upon click on axis label. Possibly need to debug when run as Y axis sets up a bit differently than x.
+function yScale(scatterData, chosenYAxis) {
     // create scales
-    var YLinearScale = d3.scaleLinear()
+    var yLinearScale = d3.scaleLinear()
       .domain([d3.min(scatterData, d => d[chosenYAxis]) * 0.8,
         d3.max(scatterData, d => d[chosenYAxis]) * 1.2
       ])
-      .range([chartHeight, o]);
+      .range([chartHeight, 0]);
   
     return yLinearScale;
+      
+  };
+
+  // function used for updating xAxis var upon click on axis label
+function renderXAxes(newXScale, xAxis) {
+    var bottomAxis = d3.axisBottom(newXScale);
   
+    xAxis.transition()
+      .duration(1000)
+      .call(bottomAxis);
+  
+    return xAxis;
   }
+
+  // function used for updating yAxis var upon click on axis label same as above just change to Y/left. Possibly need to debug when run as Y axis sets up a bit differently than x.
+function renderYAxes(newXScale, yAxis) {
+    var leftAxis = d3.axisleft(newYScale);
+  
+    yAxis.transition()
+      .duration(1000)
+      .call(leftAxis);
+  
+    return yAxis;
+  }
+
 //Read in csv to look at data and how it is arranged
 
-d3.csv("assets/data/data.csv").then(function (scatterData) {
-    console.log(scatterData)
-})
+d3.csv("assets/data/data.csv").then(function(scatterData) {
+    console.log(scatterData);
+    // console.log("yScale is: " ${yScale(scatterData, chosenYAxis)});
+});
