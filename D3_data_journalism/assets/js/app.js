@@ -98,6 +98,53 @@ function renderYCircles(circlesGroup, newXScale, chosenYAxis) {
     return circlesGroup;
   };
 
+// function used for updating circles group with new tooltip
+// axis labels came from Homework example
+// commenting out for now and want to get the charts working
+// function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+
+//     var xlabel;
+//     var ylabel;
+  
+//     if (chosenXAxis === "poverty") {
+//       xlabel = "In Poverty (%)";
+//     }
+//     else if (chosenXAxis === "age") {
+//         xlabel = "Age (Median)";
+//       }
+//     else (chosenXAxis === "income") {
+//       xlabel = "Household Income (Median)";
+//     }
+//     if (chosenYAxis === "healthcare") {
+//         ylabel = "Lacks Healthcare (%))";
+//       }
+//       else if (chosenYAxis === "smokes") {
+//           ylabel = "Smokes (%)";
+//         }
+//       else (chosenYAxis === "obesity") {
+//         ylabel = "Obesity (%)";
+//       }
+  
+//     var toolTip = d3.tip()
+//       .attr("class", "tooltip")
+//       .offset([80, -60])
+//       .html(function(d) {
+//         return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
+//       });
+  
+//     circlesGroup.call(toolTip);
+  
+//     circlesGroup.on("mouseover", function(data) {
+//       toolTip.show(data);
+//     })
+//       // onmouseout event
+//       .on("mouseout", function(data, index) {
+//         toolTip.hide(data);
+//       });
+  
+//     return circlesGroup;
+//   }
+
 //Read in csv to look at data and how it is arranged
 
 d3.csv("assets/data/data.csv").then(function(scatterData) {
