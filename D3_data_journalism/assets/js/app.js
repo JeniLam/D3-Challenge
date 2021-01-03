@@ -74,7 +74,29 @@ function renderYAxes(newXScale, yAxis) {
       .call(leftAxis);
   
     return yAxis;
-  }
+  };
+
+// function used for updating xcircles group with a transition to
+// new circles
+function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenXAxis]));
+  
+    return circlesGroup;
+  };
+
+  // function used for updating Ycircles group with a transition to
+// new circles
+function renderYCircles(circlesGroup, newXScale, chosenYAxis) {
+
+    circlesGroup.transition()
+      .duration(1000)
+      .attr("cx", d => newXScale(d[chosenYAxis]));
+  
+    return circlesGroup;
+  };
 
 //Read in csv to look at data and how it is arranged
 
