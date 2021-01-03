@@ -1,6 +1,6 @@
-// Add boiler plate inforamtion for SVG area, margins, etc
+// Add boiler plate information for SVG area, margins, etc
 var svgWidth = 960;
-var svgHeight = 500;
+var svgHeight = 600;
 
 // Define the chart's margins as an object
 var margin = {
@@ -20,6 +20,7 @@ var svg = d3.select("#scatter")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
 
+// Append a group area, then set its margins
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 //Read in csv to look at data and how it is arranged
