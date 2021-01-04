@@ -45,7 +45,9 @@ function xScale(scatterData, chosenXAxis) {
 function yScale(scatterData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-        .domain([d3.extent(scatterData, d => d[chosenYAxis])])
+        .domain([d3.min(scatterData, d => d[chosenYAxis]) * 0.8,
+        d3.max(scatterData, d => d[chosenYAxis]) * 1.2
+        ])
         .range([chartHeight, 0]);
 
     return yLinearScale;
@@ -64,8 +66,8 @@ function renderXAxes(newXScale, xAxis) {
 }
 
 // function used for updating yAxis var upon click on axis label same as above just change to Y/left. Possibly need to debug when run as Y axis sets up a bit differently than x.
-function renderYAxes(newYScale, yAxis) {
-    var leftAxis = d3.axisleft(newYScale);
+function renderYAxis(newYScale, yAxis) {
+    var leftAxis = d3.axisLeft(newYScale);
 
     yAxis.transition()
         .duration(1000)
@@ -82,7 +84,7 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
         .duration(1000)
         .attr("cx", d => newXScale(d[chosenXAxis]))
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
-        .attr("dx", d=> newXScale(d[chosenXAxis]));
+        .attr("dx", d => newXScale(d[chosenXAxis]));
 
     return circlesGroup;
 };
@@ -95,7 +97,7 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
         .duration(1000)
         .attr("cy", d => newYScale(d[chosenYAxis]))
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
-        .attr("dy", d=> newYScale(d[chosenYAxis]));
+        .attr("dy", d => newYScale(d[chosenYAxis]));
 
     return circlesGroup;
 };
@@ -149,7 +151,7 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
 
 //Read in csv to look at data and how it is arranged
 
-d3.csv("assets/data/data.csv").then(function(scatterData) {
+d3.csv("assets/data/data.csv").then(function (scatterData) {
     console.log(scatterData);
 
     // parse data - getting all strings into numerical form
@@ -188,7 +190,9 @@ d3.csv("assets/data/data.csv").then(function(scatterData) {
         .call(bottomAxis);
 
     // append y axis
-    chartGroup.append("g")
+    var yAxis = chartGroup.append("g")
+        .classed("y-axis", true)
+        // .attr("transform")
         .call(leftAxis);
 
     // append initial circles
@@ -338,7 +342,7 @@ d3.csv("assets/data/data.csv").then(function(scatterData) {
                 yLinearScale = yScale(scatterData, chosenYAxis);
 
                 // updates x axis with transition
-                yAxis = renderYAxes(yLinearScale, YAxis);
+                yAxis = renderYAxis(yLinearScale, yAxis);
 
                 // updates circles with new x values
                 circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
