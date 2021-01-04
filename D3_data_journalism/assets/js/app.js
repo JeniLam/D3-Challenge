@@ -45,9 +45,7 @@ function xScale(scatterData, chosenXAxis) {
 function yScale(scatterData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-        .domain([d3.min(scatterData, d => d[chosenYAxis]) * 0.8,
-        d3.max(scatterData, d => d[chosenYAxis]) * 1.2
-        ])
+        .domain([d3.extent(scatterData, d => d[chosenYAxis])])
         .range([chartHeight, 0]);
 
     return yLinearScale;
@@ -167,5 +165,16 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         d.smokes = +d.smokes;
         d.smokesLow = +d.smokesLow;
         d.smokesHigh = +d.smokesHigh;
-    })
+    });
+
+    // xLinearScale function above csv import
+    var xLinearScale = xScale(scatterData, chosenXAxis);
+
+    // yLinearScale function above csv import
+    var yLinearScale = yScale(scatterData, chosenYAxis);
+
+    // Create initial axis functions
+    var bottomAxis = d3.axisBottom(xLinearScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
 });
