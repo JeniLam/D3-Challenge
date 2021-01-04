@@ -177,4 +177,24 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
+    // append x axis
+    var xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${height})`)
+        .call(bottomAxis);
+
+    // append y axis
+    chartGroup.append("g")
+        .call(leftAxis);
+
+    // append initial circles
+    var circlesGroup = chartGroup.selectAll("circle")
+        .data(scatterData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => xLinearScale(d[chosenXAxis]))
+        .attr("cy", d => yLinearScale(d[chosenYAxis]))
+        .attr("r", 10)
+        .attr("fill", "purple")
+        .attr("opacity", ".6");
 });
