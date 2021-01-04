@@ -9,9 +9,20 @@ html {
   min-height: 100%;
 }
 
+h1 {
+  padding-left:75px;
+}
+
+h2 {
+  padding-left:75px;
+}
+
+p {
+  padding-left:75px;
+}
 body {
   /* Padding bottom by footer height */
-  padding-bottom: 90px;
+  padding-bottom: 80px;
   background-color: rgb(223, 217, 217);
 }
 

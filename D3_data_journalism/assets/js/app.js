@@ -1,5 +1,5 @@
 // Add boiler plate information for SVG area, margins, etc
-var svgWidth = 960;
+var svgWidth = 900;
 var svgHeight = 600;
 
 // Define the chart's margins as an object
@@ -64,7 +64,7 @@ function renderXAxes(newXScale, xAxis) {
 }
 
 // function used for updating yAxis var upon click on axis label same as above just change to Y/left. Possibly need to debug when run as Y axis sets up a bit differently than x.
-function renderYAxes(newXScale, yAxis) {
+function renderYAxes(newYScale, yAxis) {
     var leftAxis = d3.axisleft(newYScale);
 
     yAxis.transition()
@@ -80,18 +80,22 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
     circlesGroup.transition()
         .duration(1000)
-        .attr("cx", d => newXScale(d[chosenXAxis]));
+        .attr("cx", d => newXScale(d[chosenXAxis]))
+        // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
+        .attr("dx", d=> newXScale(d[chosenXAxis]));
 
     return circlesGroup;
 };
 
 // function used for updating Ycircles group with a transition to
 // new circles
-function renderYCircles(circlesGroup, newXScale, chosenYAxis) {
+function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
 
     circlesGroup.transition()
         .duration(1000)
-        .attr("cx", d => newXScale(d[chosenYAxis]));
+        .attr("cy", d => newYScale(d[chosenYAxis]))
+        // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
+        .attr("dy", d=> newYScale(d[chosenYAxis]));
 
     return circlesGroup;
 };
@@ -145,7 +149,7 @@ function renderYCircles(circlesGroup, newXScale, chosenYAxis) {
 
 //Read in csv to look at data and how it is arranged
 
-d3.csv("assets/data/data.csv").then(function (scatterData) {
+d3.csv("assets/data/data.csv").then(function(scatterData) {
     console.log(scatterData);
 
     // parse data - getting all strings into numerical form
@@ -225,10 +229,10 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 
     // Create group for three y-axis labels
     var yLabelsGroup = chartGroup.append("g")
-        .attr("transform", "rotate(-90")
+        .attr("transform", "rotate(-90)")
 
     var healthcareLabel = yLabelsGroup.append("text")
-        .attr("y", 0 - margin.left)
+        .attr("y", 40 - margin.left)
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("value", "healthcare") // value to grab for event listener
@@ -236,7 +240,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .text("Lacks Heathcare (%)")
 
     var obeseLabel = yLabelsGroup.append("text")
-        .attr("y", -20 - margin.left)
+        .attr("y", 20 - margin.left)
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("value", "obesity") // value to grab for event listener
@@ -244,7 +248,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .text("Obese (%)")
 
     var smokeLabel = yLabelsGroup.append("text")
-        .attr("y", -40 - margin.left) // may need to play with number once chart is up
+        .attr("y", 0 - margin.left) // may need to play with number once chart is up
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("value", "smokes") // value to grab for event listener
@@ -265,7 +269,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 // replaces chosenXAxis with value
                 chosenXAxis = value;
 
-                console.log(chosenXAxis)
+                console.log(chosenXAxis);
 
                 // functions here found above csv import
                 // updates x scale for new data
@@ -278,7 +282,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
-                circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+                // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
                 // changes classes to change bold text (set labels not selected as inactive)
                 if (chosenXAxis === "poverty") {
@@ -340,7 +344,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
-                circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+                // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
 
                 // changes classes to change bold text set labels not selected as inactive
                 if (chosenYAxis === "heathcare") {
