@@ -206,6 +206,8 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .attr("fill", "purple")
         .attr("opacity", ".6");
 
+        // get text in circles here:
+        
     // Create group for three x-axis labels
     var xLabelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
@@ -351,7 +353,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
 
                 // changes classes to change bold text set labels not selected as inactive
-                if (chosenYAxis === "heathcare") {
+                if (chosenYAxis === "healthcare") {
                     healthcareLabel
                         .classed("active", true)
                         .classed("inactive", false);
@@ -362,7 +364,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                         .classed("active", false)
                         .classed("inactive", true);
                 }
-                else if (chosenXAxis === "obesity") {
+                else if (chosenYAxis === "obesity") {
                     obeseLabel
                         .classed("active", true)
                         .classed("inactive", false);
