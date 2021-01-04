@@ -180,7 +180,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
     // append x axis
     var xAxis = chartGroup.append("g")
         .classed("x-axis", true)
-        .attr("transform", `translate(0, ${height})`)
+        .attr("transform", `translate(0, ${chartHeight})`)
         .call(bottomAxis);
 
     // append y axis
@@ -197,4 +197,58 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .attr("r", 10)
         .attr("fill", "purple")
         .attr("opacity", ".6");
+
+    // Create group for three x-axis labels
+    var xLabelsGroup = chartGroup.append("g")
+        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
+
+    var povertyLabel = xLabelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 20)
+        .attr("value", "poverty") // value to grab for event listener
+        .classed("active", true)
+        .text("In Poverty (%)");
+
+    var ageLabel = xLabelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 40)
+        .attr("value", "age") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Age (Median)");
+
+    var incomeLabel = xLabelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 60)
+        .attr("value", "income") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Household Income (Median)");
+
+    // Create group for three y-axis labels
+    var yLabelsGroup = chartGroup.append("g"
+        .attr("transform", "rotate(-90"))
+    
+    var healthcareLabel = yLabelsGroup.append("text")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (chartHeight/2))
+    .attr("dy", "1em")
+    .attr("value", "healthcare") // value to grab for event listener
+    .classed("active", true)
+    .text("Lacks Heathcare (%)")
+
+    var obeseLabel = yLabelsGroup.append("text")
+    .attr("y", -20 - margin.left)
+    .attr("x", 0 - (chartHeight/2))
+    .attr("dy", "1em")
+    .attr("value", "obesity") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Obese (%)")
+
+    var smokeLabel = yLabelsGroup.append("text")
+    .attr("y", -40 - margin.left) // may need to play with number once chart is up
+    .attr("x", 0 - (chartHeight/2))
+    .attr("dy", "1em")
+    .attr("value", "smokes") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Smokes (%)")
+    
 });
