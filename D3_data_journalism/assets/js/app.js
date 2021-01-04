@@ -226,29 +226,93 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
     // Create group for three y-axis labels
     var yLabelsGroup = chartGroup.append("g"
         .attr("transform", "rotate(-90"))
-    
+
     var healthcareLabel = yLabelsGroup.append("text")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (chartHeight/2))
-    .attr("dy", "1em")
-    .attr("value", "healthcare") // value to grab for event listener
-    .classed("active", true)
-    .text("Lacks Heathcare (%)")
+        .attr("y", 0 - margin.left)
+        .attr("x", 0 - (chartHeight / 2))
+        .attr("dy", "1em")
+        .attr("value", "healthcare") // value to grab for event listener
+        .classed("active", true)
+        .text("Lacks Heathcare (%)")
 
     var obeseLabel = yLabelsGroup.append("text")
-    .attr("y", -20 - margin.left)
-    .attr("x", 0 - (chartHeight/2))
-    .attr("dy", "1em")
-    .attr("value", "obesity") // value to grab for event listener
-    .classed("inactive", true)
-    .text("Obese (%)")
+        .attr("y", -20 - margin.left)
+        .attr("x", 0 - (chartHeight / 2))
+        .attr("dy", "1em")
+        .attr("value", "obesity") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Obese (%)")
 
     var smokeLabel = yLabelsGroup.append("text")
-    .attr("y", -40 - margin.left) // may need to play with number once chart is up
-    .attr("x", 0 - (chartHeight/2))
-    .attr("dy", "1em")
-    .attr("value", "smokes") // value to grab for event listener
-    .classed("inactive", true)
-    .text("Smokes (%)")
-    
+        .attr("y", -40 - margin.left) // may need to play with number once chart is up
+        .attr("x", 0 - (chartHeight / 2))
+        .attr("dy", "1em")
+        .attr("value", "smokes") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Smokes (%)")
+
+    // updateToolTip function above csv import
+    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+    // x axis labels event listener
+    xlabelsGroup.selectAll("text")
+        .on("click", function () {
+            // get value of selection
+            var value = d3.select(this).attr("value");
+            if (value !== chosenXAxis) {
+
+                // replaces chosenXAxis with value
+                chosenXAxis = value;
+
+                console.log(chosenXAxis)
+
+                // functions here found above csv import
+                // updates x scale for new data
+                xLinearScale = xScale(scatterData, chosenXAxis);
+
+                // updates x axis with transition
+                xAxis = renderAxes(xLinearScale, xAxis);
+
+                // updates circles with new x values
+                circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+                // updates tooltips with new info
+                circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
+                // changes classes to change bold text set labels not selected as inactive
+                if (chosenXAxis === "poverty") {
+                    povertyLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    incomeLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+                else if (chosenXAxis === "age") {
+                    ageLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    povertyLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    incomeLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+                else (chosenXAxis === "income") {
+                    incomeLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    povertyLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+            }
+        });
 });
