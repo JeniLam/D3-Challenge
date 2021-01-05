@@ -26,6 +26,9 @@ body {
   background-color: rgb(223, 217, 217);
 }
 
+.navbar {
+  padding: 20;
+}
 #footer {
   position: absolute;
   bottom: 0;
