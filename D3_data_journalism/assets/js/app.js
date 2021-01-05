@@ -41,7 +41,7 @@ function xScale(scatterData, chosenXAxis) {
 
 };
 
-// function used for updating y-scale var upon click on axis label. Possibly need to debug when run as Y axis sets up a bit differently than x.
+// function used for updating y-scale var upon click on axis label. 
 function yScale(scatterData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
@@ -65,7 +65,7 @@ function renderXAxes(newXScale, xAxis) {
     return xAxis;
 }
 
-// function used for updating yAxis var upon click on axis label same as above just change to Y/left. Possibly need to debug when run as Y axis sets up a bit differently than x.
+// function used for updating yAxis var upon click on axis label same as above just change to Y/left.
 function renderYAxis(newYScale, yAxis) {
     var leftAxis = d3.axisLeft(newYScale);
 
@@ -98,6 +98,27 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
         .attr("cy", d => newYScale(d[chosenYAxis]))
         // https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dx
         .attr("dy", d => newYScale(d[chosenYAxis]));
+
+    return circlesGroup;
+};
+
+// function for updating text in circles here: similar to above transition
+// x circles:
+function xCircleText(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+    .duration(1000)
+    .attr("dx", d => newXScale(d[chosenXAxis]));
+
+    return circlesGroup;
+};
+
+// y circles:
+function yCircleText(circlesGroup, newYScale, chosenYAxis) {
+
+    circlesGroup.transition()
+    .duration(1000)
+    .attr("dy", d => newYScale(d[chosenYAxis]));
 
     return circlesGroup;
 };
@@ -202,12 +223,21 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
-        .attr("r", 10)
+        .attr("r", 15)
         .attr("fill", "purple")
         .attr("opacity", ".6");
 
-        // get text in circles here:
-        
+    // get state abbreviation in circles here:
+    // cx-cy define yaxis coordinate of center point 
+    // dx-dy indicate shift along the x-axis positio of an element or its content
+    // https://stackoverflow.com/questions/13615381/d3-add-text-to-circle
+    var circleText = circlesGroup.append("text")
+    .text(d => d.abbr)
+    .attr("dx", d => xLinearScale(d[chosenXAxis]))
+    .attr("dy", d => yLinearScale(d[chosenYAxis]))
+    .classed("state", true);
+
+
     // Create group for three x-axis labels
     var xLabelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
@@ -254,7 +284,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .text("Obese (%)")
 
     var smokeLabel = yLabelsGroup.append("text")
-        .attr("y", 0 - margin.left) // may need to play with number once chart is up
+        .attr("y", 0 - margin.left) 
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("value", "smokes") // value to grab for event listener
@@ -286,6 +316,9 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 
                 // updates circles with new x values
                 circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+                // update circles with new x text
+                circleText = xCircleText(circleText, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -348,6 +381,9 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 
                 // updates circles with new x values
                 circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+
+                // update circles with new y text
+                circleText = yCircleText(circleText, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
