@@ -14,7 +14,7 @@ h1 {
 }
 
 h2 {
-  padding-left:75px;
+  padding-left:50px;
 }
 
 p {
@@ -28,7 +28,7 @@ body {
 
 .circleText {
   font-family:Verdana, Geneva, Tahoma, sans-serif;
-  font-size:10px;
+  font-size:12px;
   text-anchor:middle;
   fill: black;
 
