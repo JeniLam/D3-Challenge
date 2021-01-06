@@ -124,51 +124,51 @@ function yCircleText(circlesGroup, newYScale, chosenYAxis) {
 };
 
 // function used for updating circles group with new tooltip
-// axis labels came from Homework example
+// labels are what is printed in tool tip pop up
 // commenting out for now and want to get the charts working
-// function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
-//     var xlabel;
-//     var ylabel;
+    var xlabel;
+    var ylabel;
 
-//     if (chosenXAxis === "poverty") {
-//       xlabel = "In Poverty (%)";
-//     }
-//     else if (chosenXAxis === "age") {
-//         xlabel = "Age (Median)";
-//       }
-//     else (chosenXAxis === "income") {
-//       xlabel = "Household Income (Median)";
-//     }
-//     if (chosenYAxis === "healthcare") {
-//         ylabel = "Lacks Healthcare (%))";
-//       }
-//       else if (chosenYAxis === "smokes") {
-//           ylabel = "Smokes (%)";
-//         }
-//       else (chosenYAxis === "obesity") {
-//         ylabel = "Obesity (%)";
-//       }
+    if (chosenXAxis === "poverty") {
+      xlabel = "Poverty: )"
+    }
+    else if (chosenXAxis === "age") {
+        xlabel = "Age:";
+      }
+    else if (chosenXAxis === "income") {
+      xlabel = "Household Income:";
+    }
+    if (chosenYAxis === "healthcare") {
+        ylabel = "Healthcare: ";
+      }
+      else if (chosenYAxis === "smokes") {
+          ylabel = "Smokes: ";
+        }
+      else if (chosenYAxis === "obesity") {
+        ylabel = "Obesity: ";
+      }
 
-//     var toolTip = d3.tip()
-//       .attr("class", "tooltip")
-//       .offset([80, -60])
-//       .html(function(d) {
-//         return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
-//       });
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -60])
+      .html(function(d) {
+        return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`);
+      });
 
-//     circlesGroup.call(toolTip);
+    circlesGroup.call(toolTip);
 
-//     circlesGroup.on("mouseover", function(data) {
-//       toolTip.show(data);
-//     })
-//       // onmouseout event
-//       .on("mouseout", function(data, index) {
-//         toolTip.hide(data);
-//       });
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data);
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
 
-//     return circlesGroup;
-//   }
+    return circlesGroup;
+  }
 
 //Read in csv to look at data and how it is arranged
 
@@ -311,7 +311,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 
     // updateToolTip function above csv import
     // commented out below until updateToolTip is finalized
-    // var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+    var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
     // x axis labels event listener
     xLabelsGroup.selectAll("text")
@@ -339,7 +339,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circleText = xCircleText(circleText, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
-                // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
                 // changes classes to change bold text (set labels not selected as inactive)
                 if (chosenXAxis === "poverty") {
@@ -404,7 +404,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circleText = yCircleText(circleText, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
-                // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
 
                 // changes classes to change bold text set labels not selected as inactive
                 if (chosenYAxis === "healthcare") {
