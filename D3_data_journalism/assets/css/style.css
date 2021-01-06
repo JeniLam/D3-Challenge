@@ -26,6 +26,14 @@ body {
   background-color: rgb(223, 217, 217);
 }
 
+.circleText {
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size:10px;
+  text-anchor:middle;
+  fill: black;
+
+}
+
 .navbar {
   padding: 20;
 }

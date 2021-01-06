@@ -107,8 +107,8 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
 function xCircleText(circlesGroup, newXScale, chosenXAxis) {
 
     circlesGroup.transition()
-    .duration(1000)
-    .attr("dx", d => newXScale(d[chosenXAxis]));
+        .duration(1000)
+        .attr("dx", d => newXScale(d[chosenXAxis]));
 
     return circlesGroup;
 };
@@ -117,8 +117,8 @@ function xCircleText(circlesGroup, newXScale, chosenXAxis) {
 function yCircleText(circlesGroup, newYScale, chosenYAxis) {
 
     circlesGroup.transition()
-    .duration(1000)
-    .attr("dy", d => newYScale(d[chosenYAxis]));
+        .duration(1000)
+        .attr("dy", d => newYScale(d[chosenYAxis]));
 
     return circlesGroup;
 };
@@ -217,6 +217,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .call(leftAxis);
 
     // append initial circles
+    // https://stackoverflow.com/questions/55988709/how-can-i-add-labels-inside-the-points-in-a-scatterplot
     var circlesGroup = chartGroup.selectAll("circle")
         .data(scatterData)
         .enter()
@@ -225,17 +226,34 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
         .attr("r", 15)
         .attr("fill", "purple")
-        .attr("opacity", ".6");
+        .attr("opacity", "0.6");
+
+    // add state labels to the data points
+    var circleLabels = chartGroup.selectAll("text")
+    .data(scatterData)
+    .enter()
+    .append("text")
+    .classed("stateCircle", true);
+
+    circleLabels.attr("x", d => xLinearScale(d[chosenXAxis]))
+    .attr("y", d => yLinearScale(d[chosenYAxis]))
+    .text(d=> d.abbr)
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "15px")
+    .attr("text-anchor", "middle")
+    .attr("fill", "white");
 
     // get state abbreviation in circles here:
     // cx-cy define yaxis coordinate of center point 
     // dx-dy indicate shift along the x-axis positio of an element or its content
     // https://stackoverflow.com/questions/13615381/d3-add-text-to-circle
-    var circleText = circlesGroup.append("text")
-    .text(d => d.abbr)
-    .attr("dx", d => xLinearScale(d[chosenXAxis]))
-    .attr("dy", d => yLinearScale(d[chosenYAxis]))
-    .classed("state", true);
+
+    // var circleText = circlesGroup.append("text")
+    //     .text(d => d.abbr)
+    // console.log(circleText)
+    //     .attr("dx", d => xLinearScale(d[chosenXAxis]))
+    //     .attr("dy", d => yLinearScale(d[chosenYAxis]))
+    //     .classed("stateText", true);
 
 
     // Create group for three x-axis labels
@@ -284,7 +302,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .text("Obese (%)")
 
     var smokeLabel = yLabelsGroup.append("text")
-        .attr("y", 0 - margin.left) 
+        .attr("y", 0 - margin.left)
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
         .attr("value", "smokes") // value to grab for event listener
@@ -318,7 +336,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
                 // update circles with new x text
-                circleText = xCircleText(circleText, xLinearScale, chosenXAxis);
+                circleText = circleLabels(circleText, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -383,7 +401,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
                 // update circles with new y text
-                circleText = yCircleText(circleText, yLinearScale, chosenYAxis);
+                circleText = circleLabels(circleText, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
