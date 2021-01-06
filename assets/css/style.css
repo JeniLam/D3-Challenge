@@ -13,13 +13,9 @@ h1 {
   padding-left:75px;
 }
 
-h2 {
+/* p {
   padding-left:50px;
-}
-
-p {
-  padding-left:75px;
-}
+} */
 body {
   /* Padding bottom by footer height */
   padding-bottom: 80px;
