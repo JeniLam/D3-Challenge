@@ -229,17 +229,17 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .attr("opacity", "0.6");
 
     // add state labels to the data points
-    var circleLabels = chartGroup.selectAll("text")
+    var circleText = chartGroup.selectAll("text")
     .data(scatterData)
     .enter()
     .append("text")
     .classed("stateCircle", true);
 
-    circleLabels.attr("x", d => xLinearScale(d[chosenXAxis]))
-    .attr("y", d => yLinearScale(d[chosenYAxis]))
+    circleText.attr("dx", d => xLinearScale(d[chosenXAxis]))
+    .attr("dy", d => yLinearScale(d[chosenYAxis]))
     .text(d=> d.abbr)
     .attr("font-family", "sans-serif")
-    .attr("font-size", "15px")
+    .attr("font-size", "12px")
     .attr("text-anchor", "middle")
     .attr("fill", "white");
 
@@ -336,7 +336,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
                 // update circles with new x text
-                circleText = circleLabels(circleText, xLinearScale, chosenXAxis);
+                circleText = xCircleText(circleText, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -401,7 +401,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
                 // update circles with new y text
-                circleText = circleLabels(circleText, yLinearScale, chosenYAxis);
+                circleText = yCircleText(circleText, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
                 // circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
