@@ -1,3 +1,4 @@
+// function makeResponsive() {
 // Add boiler plate information for SVG area, margins, etc
 var svgWidth = 900;
 var svgHeight = 600;
@@ -55,7 +56,7 @@ function yScale(scatterData, chosenYAxis) {
 };
 
 // function used for updating xAxis var upon click on axis label
-function renderXAxes(newXScale, xAxis) {
+function renderXAxis(newXScale, xAxis) {
     var bottomAxis = d3.axisBottom(newXScale);
 
     xAxis.transition()
@@ -131,6 +132,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     var xlabel;
     var ylabel;
     // labels for tool tip based on the axis selected
+    // should use a swtich statement instead?
     if (chosenXAxis === "poverty") {
         xlabel = "Poverty: "
     }
@@ -153,7 +155,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     // Initialize Tooltip - reviewed day 3 activity 8 to debug
     var toolTip = d3.tip()
         .attr("class", "tooltip")
-        .offset([80, -60])
+        // .offset([80, -60])
         // need style for tooltip so it's not just text
         // https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
         .style("background-color", "white")
@@ -162,7 +164,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         .style("border-radius", "5px")
         .style("padding", "5px")
         .html(function (d) {
-            return `<strong>${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`;
+            return (`<strong>${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}</strong>`);
         });
 
     // Create tooltip in chartGroup
@@ -234,7 +236,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
-        .attr("r", 20)
+        .attr("r", 25)
         .attr("fill", "purple")
         .attr("opacity", "0.6");
 
@@ -245,6 +247,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .data(scatterData)
         .enter()
         .append("text")
+        .style("text-anchor", "middle")
         .classed("stateCircle", true);
 
     console.log(circleText)
@@ -344,7 +347,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 xLinearScale = xScale(scatterData, chosenXAxis);
 
                 // updates x axis with transition
-                xAxis = renderXAxes(xLinearScale, xAxis);
+                xAxis = renderXAxis(xLinearScale, xAxis);
 
                 // updates circles with new x values
                 circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
@@ -459,10 +462,10 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 }).catch(function (error) {
     console.log(error);
 });
-
+// };
 // day 3 activity 8
 // When the browser loads, makeResponsive() is called.
-makeResponsive();
+// makeResponsive();
 
-// When the browser window is resized, makeResponsive() is called.
-d3.select(window).on("resize", makeResponsive);
+// // When the browser window is resized, makeResponsive() is called.
+// d3.select(window).on("resize", makeResponsive);
