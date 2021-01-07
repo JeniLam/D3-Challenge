@@ -130,45 +130,55 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
     var xlabel;
     var ylabel;
-// labels for tool tip based on the axis selected
+    // labels for tool tip based on the axis selected
     if (chosenXAxis === "poverty") {
-      xlabel = "Poverty: "
+        xlabel = "Poverty: "
     }
     else if (chosenXAxis === "age") {
         xlabel = "Age:";
-      }
+    }
     else if (chosenXAxis === "income") {
-      xlabel = "Household Income:";
+        xlabel = "Household Income:";
     }
     if (chosenYAxis === "healthcare") {
         ylabel = "Healthcare: ";
-      }
-      else if (chosenYAxis === "smokes") {
-          ylabel = "Smokes: ";
-        }
-      else if (chosenYAxis === "obesity") {
+    }
+    else if (chosenYAxis === "smokes") {
+        ylabel = "Smokes: ";
+    }
+    else if (chosenYAxis === "obesity") {
         ylabel = "Obesity: ";
-      }
+    }
 
+    // Initialize Tooltip - reviewed day 3 activity 8 to debug
     var toolTip = d3.tip()
-      .attr("class", "tooltip")
-      .offset([80, -60])
-      .html(function(d) {
-        return `${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`;
-      });
+        .attr("class", "tooltip")
+        .offset([80, -60])
+        // need style for tooltip so it's not just text
+        // https://www.d3-graph-gallery.com/graph/interactivity_tooltip.html
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
+        .html(function (d) {
+            return `<strong>${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}`;
+        });
 
-    circlesGroup.call(toolTip);
+    // Create tooltip in chartGroup
+    chartGroup.call(toolTip);
 
-    circlesGroup.on("mouseover", function(data) {
-      toolTip.show(data);
+    // Create "mouseover" event listener to display tooltip
+    circlesGroup.on("mouseover", function (data) {
+        toolTip.show(data, this);
     })
-      // onmouseout event
-      .on("mouseout", function(data, index) {
-        toolTip.hide(data);
-      });
+        // Create "mouseout" event listener to hide tooltip
+        .on("mouseout", function (data) {
+            toolTip.hide(data);
+        });
 
     return circlesGroup;
-  }
+}
 
 //Read in csv to look at data and how it is arranged
 
@@ -232,17 +242,17 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
     // null - https://stackoverflow.com/questions/46147231/selecting-null-what-is-the-reason-behind-selectallnull-in-d3
     // use null to guarantee that the "enter" selection ALWAYS corresponds to the elements in the data array containing one element for every element in the data
     var circleText = chartGroup.selectAll(null)
-    .data(scatterData)
-    .enter()
-    .append("text")
-    .classed("stateCircle", true);
+        .data(scatterData)
+        .enter()
+        .append("text")
+        .classed("stateCircle", true);
 
     console.log(circleText)
 
     circleText.attr("dx", d => xLinearScale(d[chosenXAxis]))
-    .attr("dy", d => yLinearScale(d[chosenYAxis]))
-    .text(d=> d.abbr)
-    .classed("stateText", true);
+        .attr("dy", d => yLinearScale(d[chosenYAxis]))
+        .text(d => d.abbr)
+        .classed("stateText", true);
     // .attr("font-size", "12px")
     // .attr("text-anchor", "middle")
     // ;
@@ -449,3 +459,10 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
 }).catch(function (error) {
     console.log(error);
 });
+
+// day 3 activity 8
+// When the browser loads, makeResponsive() is called.
+makeResponsive();
+
+// When the browser window is resized, makeResponsive() is called.
+d3.select(window).on("resize", makeResponsive);
