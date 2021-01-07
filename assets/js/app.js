@@ -229,11 +229,15 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
         .attr("opacity", "0.6");
 
     // add state labels to the data points
-    var circleText = chartGroup.selectAll("text")
+    // null - https://stackoverflow.com/questions/46147231/selecting-null-what-is-the-reason-behind-selectallnull-in-d3
+    // use null to guarantee that the "enter" selection ALWAYS corresponds to the elements in the data arrayy containing one element for every element in the data
+    var circleText = chartGroup.selectAll(null)
     .data(scatterData)
     .enter()
     .append("text")
     .classed("stateCircle", true);
+
+    console.log(circleText)
 
     circleText.attr("dx", d => xLinearScale(d[chosenXAxis]))
     .attr("dy", d => yLinearScale(d[chosenYAxis]))
