@@ -133,22 +133,25 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     var ylabel;
     // labels for tool tip based on the axis selected
     // should use a swtich statement instead?
+    // xaxis
     if (chosenXAxis === "poverty") {
-        xlabel = "Poverty: "
+        xlabel = "Poverty: ";
     }
     else if (chosenXAxis === "age") {
         xlabel = "Age:";
     }
-    else if (chosenXAxis === "income") {
+    else {
         xlabel = "Household Income:";
     }
+
+    // yaxis
     if (chosenYAxis === "healthcare") {
         ylabel = "Healthcare: ";
     }
     else if (chosenYAxis === "smokes") {
         ylabel = "Smokes: ";
     }
-    else if (chosenYAxis === "obesity") {
+    else  {
         ylabel = "Obesity: ";
     }
 
@@ -166,17 +169,20 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         .html(function (d) {
             return (`<strong>${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}</strong>`);
         });
+    
+    // create tooltip for 
 
     // Create tooltip in chartGroup
     chartGroup.call(toolTip);
 
+    
     // Create "mouseover" event listener to display tooltip
     circlesGroup.on("mouseover", function (data) {
-        toolTip.show(data, this);
+       return toolTip.show(data, this);
     })
         // Create "mouseout" event listener to hide tooltip
         .on("mouseout", function (data) {
-            toolTip.hide(data);
+           return toolTip.hide(data);
         });
 
     return circlesGroup;
