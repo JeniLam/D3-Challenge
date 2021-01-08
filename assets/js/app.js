@@ -141,7 +141,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         xlabel = "Age:";
     }
     else {
-        xlabel = "Household Income:";
+        xlabel = "Median Income: $";
     }
 
     // yaxis
