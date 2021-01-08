@@ -362,7 +362,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circleText = xCircleText(circleText, xLinearScale, chosenXAxis);
 
                 // updates tooltips with new info
-                circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
                 // changes classes to change bold text (set labels not selected as inactive)
                 if (chosenXAxis === "poverty") {
@@ -427,7 +427,7 @@ d3.csv("assets/data/data.csv").then(function (scatterData) {
                 circleText = yCircleText(circleText, yLinearScale, chosenYAxis);
 
                 // updates tooltips with new info
-                circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
                 // changes classes to change bold text set labels not selected as inactive
                 if (chosenYAxis === "healthcare") {
